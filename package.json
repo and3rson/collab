@@ -1,5 +1,5 @@
 {
-  "name": "pythonman",
+  "name": "bomberman",
   "version": "1.0.0",
   "description": "Bomberman implementation in NodeJS",
   "main": "app.js",
