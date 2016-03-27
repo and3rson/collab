@@ -102,8 +102,20 @@ Game.prototype.start = function() {
         $block.css({left: event.moveTarget.x * 50, top: event.moveTarget.y * 50});
     });
 
+    socket.on('kill:player', function(event) {
+        var icon;
+        if (event.isSuicide) {
+            icon = '/static/images/icon_suicide.png';
+        } else {
+            icon = '/static/images/icon_frag.png';
+        }
+        Materialize.toast(event.attacker + '<img src="' + icon + '" style="margin: 0 0.5rem">' + event.victim, 10000);
+
+        $('.field .block.player.team-' + event.victimId).remove();
+    });
+
     socket.on('message', function(message) {
-        Materialize.toast(message.text, 3000);
+        Materialize.toast(message.text, 5000);
     });
 
     socket.on('disconnect', function() {
@@ -153,7 +165,7 @@ var spawnFire = function($container, start, end) {
                     window.setTimeout(function() {
                         $particle.remove();
                     }, 500);
-                }, i / length * 250);
+                }, i / 5);
             })(i);
         }
     }, 25);
