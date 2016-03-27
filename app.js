@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 
 var utils = require('./utils');
 
-server.listen(8020);
+server.listen(8000);
 
 app.get('/', function (request, response) {
     response.sendFile(__dirname + '/templates/index.html');
