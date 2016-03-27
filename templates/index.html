@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bomberman</title>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/main.css" />
+    <script src="/static/main.js"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <nav class="pink darken-2">
+        <div class="nav-wrapper">
+            <div class="container">
+                <a href="#" class="brand-logo">
+                    <i class="material-icons left">code</i>
+                    Bomberman
+                </a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="auth-activity" class="fading in">
+        <div style="padding: 10rem" class="center-align">
+            <h1>Who are you, stranger?</h1>
+            <form autocomplete="off">
+                <div class="row">
+                    <div class="col s6 offset-s3 input-field">
+                        <input type="text" id="nickname" class="validate" value="Anonymous" />
+                        <label for="nickname">Enter your name</label>
+                    </div>
+                    <div class="col s12 center-align">
+                        <button class="btn waves-effect" id="start-game">Start game</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="game-activity" class="fading out">
+        <div class="field">
+        </div>
+    </div>
+</body>
+</html>
