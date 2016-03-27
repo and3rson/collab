@@ -47,6 +47,8 @@ io.on('connection', function(client) {
                 game.players[1].enableAI();
                 game.players[2].enableAI();
                 game.players[3].enableAI();
+
+                game.start();
             }, 500);
 
             // setInterval(function() {

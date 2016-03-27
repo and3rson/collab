@@ -97,6 +97,10 @@ Game.prototype.start = function() {
         });
     });
 
+    socket.on('bomb:count', function(event) {
+        $('#bomb-count .value').html(event.count);
+    });
+
     socket.on('move:player', function(event) {
         var $block = $('.block.player.team-' + event.id);
         $block.css({left: event.moveTarget.x * 50, top: event.moveTarget.y * 50});

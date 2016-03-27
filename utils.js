@@ -2,6 +2,7 @@ var Game = function(width, height, fillPercentage) {
     this.field = [];
     this.players = [];
     this.bombs = [];
+    this.isRunning = true;
 
     this.initField(width, height, fillPercentage);
 };
@@ -14,6 +15,26 @@ Game.prototype.broadcast = function(event, data) {
             player.client.emit(event, data);
         }
     });
+};
+
+Game.prototype.start = function() {
+    var game = this;
+
+    var increaseBombCount = function() {
+        if (game.isRunning) {
+            game.players.forEach(function(player) {
+                if (player.isAlive) {
+                    player.bombsRemaining++;
+
+                    if (player.client) {
+                        player.client.emit('bomb:count', {count: player.bombsRemaining});
+                    }
+                }
+            });
+            setTimeout(increaseBombCount, 5000);
+        }
+    };
+    increaseBombCount();
 };
 
 Game.prototype.getObjectAtPosition = function(pos, excludePlayer, excludeBomb) {
@@ -214,7 +235,7 @@ var Player = function(game, id, pos, client, nickname) {
 
     this.isAlive = true;
 
-    this.bombsRemaining = 1;
+    this.bombsRemaining = 0;
 
     if (client) {
         // This is a real connection.
@@ -245,6 +266,10 @@ exports.Player.prototype.enableAI = function() {
     var game = this.game;
 
     var tick = function() {
+        if (!game.isRunning) {
+            console.log('The game is finished. :)');
+            return;
+        }
         if (!thisPlayer.isAlive) {
             console.log('I`m dead. :)');
             return;
@@ -280,17 +305,20 @@ exports.Player.prototype.enableAI = function() {
             }
 
             safeCells.sort(function(a, b) {
-                return a.distance(thisPlayer.pos) > b.distance(thisPlayer.pos);
+                var da = a.distance(thisPlayer.pos);
+                var db = b.distance(thisPlayer.pos);
+                if (da != db) {
+                    return da > db;
+                } else {
+                    return Math.random() < 0.5;
+                }
             });
-
-            console.log('Safe cells:', safeCells);
 
             var safePath = null;
 
             safeCells.forEach(function(safeCell) {
                 if (!safePath) {
                     safePath = thisPlayer.findPath(safeCell, true);
-                    console.log('Safe path:', safePath);
                 }
             });
 
@@ -365,6 +393,8 @@ exports.Player.prototype.enableAI = function() {
 };
 
 exports.Player.prototype.kill = function(source) {
+    var thisPlayer = this;
+
     this.isAlive = false;
 
     this.game.broadcast('kill:player', {attacker: source.nickname, victim: this.nickname, victimId: this.id, isSuicide: source.id == this.id});
@@ -372,6 +402,11 @@ exports.Player.prototype.kill = function(source) {
     if (this.client) {
         this.client.emit('message', {type: 'info', text: 'You are dead. Not a big surprise!'});
         this.client.emit('end');
+    }
+
+    if (this.game.players.filter(function(player) { return player.isAlive; }).length == 1) {
+        this.game.broadcast('message', {type: 'info', text: thisPlayer.nickname + ' is the winner!'});
+        this.game.isRunning = false;
     }
 };
 
@@ -459,12 +494,18 @@ Player.prototype.setSomebodyABomb = function() {
             game.broadcast('explode:bomb', {id: bomb.id, pos: bomb.pos, explosionLengths: explosionLengths});
 
             thisPlayer.bombsRemaining++;
+            if (thisPlayer.client) {
+                thisPlayer.client.emit('bomb:count', {count: thisPlayer.bombsRemaining});
+            }
         });
 
         thisPlayer.bombsRemaining--;
         game.bombs.push(bomb);
 
         game.broadcast('spawn:bomb', {id: bomb.id, owner_id: thisPlayer.id, pos: bomb.pos});
+        if (thisPlayer.client) {
+            thisPlayer.client.emit('bomb:count', {count: thisPlayer.bombsRemaining});
+        }
     }
 };
 
@@ -516,13 +557,21 @@ exports.Player.prototype.moveTo = function(targetPos) {
         return;
     }
 
+    var game = this.game;
+
     this.game.broadcast('move:player', {id: this.id, moveTarget: targetPos.serialize()});
 
     this.targetPos = new Vector(targetPos);
     this.isMoving = true;
     setTimeout(function() {
-        this.pos = this.targetPos;
-        this.targetPos = null;
+        if (!game.getObjectAtPosition(this.targetPos)) {
+            this.pos = this.targetPos;
+            this.targetPos = null;
+        } else {
+            // Oops! The place is already busy!
+            this.game.broadcast('move:player', {id: this.id, moveTarget: this.pos});
+            this.targetPos = null;
+        }
 
         setTimeout(function() {
             this.isMoving = false;
