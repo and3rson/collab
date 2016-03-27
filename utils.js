@@ -31,7 +31,7 @@ Game.prototype.start = function() {
                     }
                 }
             });
-            setTimeout(increaseBombCount, 5000);
+            setTimeout(increaseBombCount, 30000);
         }
     };
     increaseBombCount();
