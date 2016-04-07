@@ -35,7 +35,10 @@ html(lang="en")
                         i.material-icons.left code
                         | Collab
                     ul#users.right.hide-on-med-and-down
-                        li asd
+                        li
+                            span#online-count 0
+                            = ' '
+                            | users online
 
         main
             textarea.code(autocomplete="off", data-mode="python")

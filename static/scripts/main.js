@@ -231,15 +231,21 @@ Engine.prototype.start = function() {
 
     var socket = io('/');
 
+    var onlineCount = 0;
+
     socket.on('hello', function() {
         socket.emit('hello', {id: ctx.id});
         Materialize.toast('Connected', 5000);
         self.connected = true;
+        onlineCount = 1;
+        $('#online-count').html(onlineCount);
     });
 
     socket.on('disconnect', function() {
         Materialize.toast('Disconnected', 5000);
         self.connected = false;
+        onlineCount = 0;
+        $('#online-count').html(onlineCount);
     });
 
     socket.on('message', function(e) {
@@ -262,11 +268,15 @@ Engine.prototype.start = function() {
         console.log('New client:', event);
         var $cursor = $('<div/>').addClass('cursor').addClass('cursor-' + event.id);
         $cursor.appendTo($('.overlay'));
+        onlineCount++;
+        $('#online-count').html(onlineCount);
     });
 
     socket.on('client:remove', function(event) {
         console.log('Client removed:', event);
         $('.cursor.cursor-' + event.id).remove();
+        onlineCount--;
+        $('#online-count').html(onlineCount);
     });
 
     socket.on('cursor', function(event) {

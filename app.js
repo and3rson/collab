@@ -49,9 +49,10 @@ io.on('connection', function(client) {
         client.id = userId++;
 
         if (!sessions[e.id]) {
-            client.emit('message', {text: 'Session not found!'});
-            client.disconnect();
-            return;
+            // client.emit('message', {text: 'Session not found!'});
+            // client.disconnect();
+            // return;
+            sessions[id] = {clients: []};
         }
 
         var session = sessions[e.id];
@@ -69,7 +70,9 @@ io.on('connection', function(client) {
 
         broadcast('client:new', {id: client.id}, client);
         session.clients.forEach(function(other) {
-            client.emit('client:new', {id: other.id});
+            if (client != other) {
+                client.emit('client:new', {id: other.id});
+            }
         });
 
         client.on('change', function(e) {
