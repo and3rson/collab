@@ -229,7 +229,7 @@ Engine.prototype = {};
 Engine.prototype.start = function() {
     var self = this;
 
-    var socket = io('http://127.0.0.1:8000/');
+    var socket = io('/');
 
     socket.on('hello', function() {
         socket.emit('hello', {id: ctx.id});
