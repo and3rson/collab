@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 
 // var utils = require('./utils');
 
-server.listen(8000);
+server.listen(8091);
 
 var sessions = {};
 var userId = 0;

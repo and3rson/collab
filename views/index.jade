@@ -1,45 +1,45 @@
 !!!
 html(lang="en")
-head
-    meta(charset="UTF-8")
-    title Collab
+    head
+        meta(charset="UTF-8")
+        title Collab
 
-    script(src="/static/scripts/jquery-2.1.1.min.js")
-    script(type="text/javascript", src="/static/scripts/socket.io.min.js")
-    link(rel="stylesheet", type="text/css", href="/static/styles/main.css")
+        script(src="/static/scripts/jquery-2.1.1.min.js")
+        script(type="text/javascript", src="/static/scripts/socket.io.min.js")
+        link(rel="stylesheet", type="text/css", href="/static/styles/main.css")
 
-    // Compiled and minified CSS
-    link(rel="stylesheet", href="/static/styles/materialize.min.css")
-    // Compiled and minified JavaScript
-    script(src="/static/scripts/materialize.min.js")
-    link(rel="stylesheet", href="/static/styles/material-icons.css")
+        // Compiled and minified CSS
+        link(rel="stylesheet", href="/static/styles/materialize.min.css")
+        // Compiled and minified JavaScript
+        script(src="/static/scripts/materialize.min.js")
+        link(rel="stylesheet", href="/static/styles/material-icons.css")
 
-    // CodeMirror
-    link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/codemirror.min.css")
-    link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/theme/monokai.css")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/codemirror.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/mode/python/python.min.js")
+        // CodeMirror
+        link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/codemirror.min.css")
+        link(rel="stylesheet", type="text/css", href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/theme/monokai.css")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/codemirror.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.12.0/mode/python/python.min.js")
 
-    script(src="/static/scripts/main.js")
+        script(src="/static/scripts/main.js")
 
-    script(type="text/javascript").
-        window.ctx = window.ctx || {};
-        window.ctx.id = #{id};
-        window.ctx.rewrite = #{rewrite};
+        script(type="text/javascript").
+            window.ctx = window.ctx || {};
+            window.ctx.id = #{id};
+            window.ctx.rewrite = #{rewrite};
 
-body
-    nav.pink.darken-2
-        .nav-wrapper
-            div(style="padding: 0 1.5rem")
-                a.brand-logo(href="#")
-                    i.material-icons.left code
-                    | Collab
-                ul#users.right.hide-on-med-and-down
-                    li asd
+    body
+        nav.pink.darken-2
+            .nav-wrapper
+                div(style="padding: 0 1.5rem")
+                    a.brand-logo(href="#")
+                        i.material-icons.left code
+                        | Collab
+                    ul#users.right.hide-on-med-and-down
+                        li asd
 
-    main
-        textarea.code(autocomplete="off", data-mode="python")
-            = "def foo():\n    print 'bar'\n"
-        .overlay
+        main
+            textarea.code(autocomplete="off", data-mode="python")
+                = "def foo():\n    print 'bar'\n"
+            .overlay
 
-    footer
+        footer
