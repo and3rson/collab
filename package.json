@@ -1,15 +1,16 @@
 {
-  "name": "bomberman",
+  "name": "collab",
   "version": "1.0.0",
-  "description": "Bomberman implementation in NodeJS",
+  "description": "Collab code editor",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Andrew Dunai",
   "license": "GPL-3.0",
   "dependencies": {
     "express": "^4.13.4",
+    "jade": "^1.11.0",
     "socketio": "^1.0.0"
   }
 }
