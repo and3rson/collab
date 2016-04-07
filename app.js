@@ -9,7 +9,10 @@ var fs = require('fs');
 // var utils = require('./utils');
 
 // server.listen(8091);
-fs.unlinkSync('/var/sock/collab.sock');
+try {
+    fs.unlinkSync('/var/sock/collab.sock');
+} catch(e) {
+}
 server.listen('/var/sock/collab.sock');
 
 var sessions = {};
