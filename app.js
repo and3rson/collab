@@ -4,10 +4,13 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var fs = require('fs');
 
 // var utils = require('./utils');
 
-server.listen(8091);
+// server.listen(8091);
+fs.unlinkSync('/var/sock/collab.sock');
+server.listen('/var/sock/collab.sock');
 
 var sessions = {};
 var userId = 0;
